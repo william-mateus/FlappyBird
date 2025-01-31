@@ -52,12 +52,21 @@ class Game {
     setup() {
         // Iniciar a atualização do jogo
         requestAnimationFrame(this.update.bind(this));
-
+        
         this.canvas.addEventListener("click", this.onCanvasClick.bind(this));
+
+        window.addEventListener("keydown", this.onKeydown.bind(this));
     }
 
     onCanvasClick() {
         this.player.jump();
     }
+
+    onKeydown(tecla) {
+        if (tecla.key == ' ') {
+            this.player.jump();
+        }
+    }
+
 
 }
