@@ -1,19 +1,20 @@
-class Player extends ImageUse {
+class Player extends Entity {
 
-     /**
-     * @param {CanvasRenderingContext2D} ctx 
-     * @param {Number} x 
-     * @param {Number} y 
-     * @param {Number} largura 
-     * @param {Number} altura 
-     */
-    constructor(ctx, x, y, largura, altura) {
+    /**
+      * @param {Game} game
+      * @param {CanvasRenderingContext2D} ctx 
+      * @param {Number} x 
+      * @param {Number} y 
+      * @param {Number} largura 
+      * @param {Number} altura 
+      */
+    constructor(game, ctx, x, y, largura, altura) {
         super(ctx, x, y, largura, altura, 'assets/playerPro.png');
-        
+        this.game = game;
+
         // Cria a variavel timer na classe Player
         this.timer = 0;
         this.frameSpritesheet = 0;
-
         this.velocity = 0;
     }
 
@@ -22,7 +23,7 @@ class Player extends ImageUse {
         this.velocity = impulsoDoPulo;
     }
 
-    draw(){
+    draw() {
         const quantidadeFrames = 3;
         const larguraFrame = this.imageElement.width / quantidadeFrames;
         const alturaFrame = this.imageElement.height;
@@ -40,13 +41,19 @@ class Player extends ImageUse {
      */
     update(deltaTime) {
         const intervaloEntreFramesDaSprite = 0.07
-        
-        if(this.velocity < 0){
-            this.timer += deltaTime
+
+        // Não deixa o player bater no chão
+        if (this.y + this.altura >= this.ctx.canvas.height) {
+            this.y = this.ctx.canvas.height - this.altura;
+            // this.game.currentState = GameState.GameOver;
         }
-        else{
+
+        if (this.velocity < 0) {
+            this.timer += deltaTime
+        } else {
             this.frameSpritesheet = 1
         }
+
         if (this.timer >= intervaloEntreFramesDaSprite) {
             this.frameSpritesheet++;
             if (this.frameSpritesheet >= 3) {
@@ -55,8 +62,27 @@ class Player extends ImageUse {
             this.timer = 0;
         }
 
-        const gravity = 12;// Aceleração de 12px² por segundo
+        const gravity = 16;// Aceleração de 12px² por segundo
         this.velocity += gravity;
         this.y += this.velocity * deltaTime;
+    }
+
+    checkCollision(pipe) {
+
+        this.mensagem = document.getElementById('mensagem');
+        // Verifica colisão AABB
+        if (this.x < pipe.x + pipe.largura &&
+            this.x + this.largura > pipe.x &&
+            this.y < pipe.y + pipe.altura &&
+            this.y + this.altura > pipe.y) {
+            // Colisão detectada
+            console.log("Colisão detectada!");
+
+            this.game.currentState = GameState.GameOver;
+        } else if (this.x > pipe.x + pipe.largura && !pipe.scored) {
+            pipe.scored = true;
+            this.game.score++;
+            console.log(this.game.score);
+        }
     }
 }

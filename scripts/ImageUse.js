@@ -1,4 +1,4 @@
-class ImageUse {
+class Entity {
 
     /**
      * @param {CanvasRenderingContext2D} ctx 
@@ -24,4 +24,5 @@ class ImageUse {
      * @param {Number} deltaTime Tempo que passou entre um frame e outro (Em segundos)
      */
     update(deltaTime) { }
+
 }
