@@ -6,21 +6,14 @@ class Spritesheet {
     }
 
     async load() {
-        // TODO: Como fazer pra carregar os dois ao mesmo tempo
-
-        // 1- Carregar a spritesheet
+        
         this.image = new Image();
-        this.image.src = `/assets/texture.png`;
+        this.image.src = `../assets/texture.png`;
         await this.image.decode();
 
-        // 2- Carregar o .json
-        const request = await fetch(`/assets/texture.json`);
-        this.pack = await request.json();
 
-        // 3- Criar um método pra pegar as coordenadas com base no nome da imagem
-        const coordenadas = this.getCoordinates("0.png")
-        
-        // 4- Desenhar uma sprite com base no nome
+        const request = await fetch(`../assets/texture.json`);
+        this.pack = await request.json();
     }
 
     /**
@@ -35,21 +28,21 @@ class Spritesheet {
      * @param {string} imageName
      * @param {number} x
      * @param {number} y
-     * @param {number} largura
-     * @param {number} altura
+     * @param {number} [largura]
+     * @param {number} [altura]
      */
-    draw(ctx, imageName, x, y, largura, altura) {
+    draw(ctx, imageName, x, y, largura = undefined, altura = undefined) {
         const coordenadas = this.getCoordinates(imageName);
+        ctx.imageSmoothingEnabled = false;
         ctx.drawImage(
             this.image,
             coordenadas.x, coordenadas.y,
             coordenadas.w, coordenadas.h,
             x, y,
-            largura, altura
+            largura ?? coordenadas.w, altura ?? coordenadas.h
         );
     }
 
 }
 
-// TODO: estudar sobre Singleton
 Spritesheet.instance = new Spritesheet();

@@ -16,6 +16,7 @@ class Game {
         this.mouseX = 0;
         this.mouseY = 0;
 
+
         // Cria a GUI
         this.gui = new GUI(this, this.ctx);
 
@@ -23,22 +24,16 @@ class Game {
         this.player = new Player(this, this.ctx, 150, 300, 255 / 3, 180 / 3 );
 
         // Espaço fixo entre os canos
-        const gap = 200;
+        const gap = 250;
         
         // Cria o vetor de pipes
-        this.pipes = [
-            new Pipe(this.ctx, 850, -95, 150 / 1.5, 350, 'assets/topPipe.png'),
-            new Pipe(this.ctx, 850, -95 + 350 + gap, 150 / 1.5, 350, 'assets/lowPipe.png'),
+        this.pipes = [];
 
-            new Pipe(this.ctx, 850 + 250, 70 - 95, 150 / 1.5, 350, 'assets/topPipe.png'),
-            new Pipe(this.ctx, 850 + 250, 70 - 95 + 350 + gap, 150 / 1.5, 350, 'assets/lowPipe.png'),
+        let quantidadeDeCanos = Math.floor((this.canvas.width ) / (gap - Pipe.width));
 
-            new Pipe(this.ctx, 850 + 500, -20 - 95, 150 / 1.5, 350, 'assets/topPipe.png'),
-            new Pipe(this.ctx, 850 + 500, -20 - 95 + 350 + gap, 150 / 1.5, 350, 'assets/lowPipe.png'),
-
-            new Pipe(this.ctx, 850 + 800, -100 - 95, 150 / 1.5, 350, 'assets/topPipe.png'),
-            new Pipe(this.ctx, 850 + 800, -100 - 95 + 350 + gap, 150 / 1.5, 350, 'assets/lowPipe.png')
-        ];
+        for(let i = 0; i < quantidadeDeCanos ; i++){
+            this.pipes.push(new Pipe(this.ctx,this.canvas.width + i*gap))
+        }
 
         // Cria as variáveis responsáveis por calcular o tempo que passou entre um frame e outro
         this.previousTime = 0;
@@ -82,7 +77,7 @@ class Game {
                 // Atualizar e desenhar cada pipe
                 for (let i = 0; i < this.pipes.length; i++) {
                     this.pipes[i].update(this.deltaTime);
-                    this.player.checkCollision(this.pipes[i]); // Verificar colisão para cada pipe
+                    //this.player.checkCollision(this.pipes[i]); // Verificar colisão para cada pipe
                     this.pipes[i].draw();
 
                 }

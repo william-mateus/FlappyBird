@@ -8,8 +8,8 @@ class Player extends Entity {
       * @param {Number} largura 
       * @param {Number} altura 
       */
-    constructor(game, ctx, x, y, largura, altura) {
-        super(ctx, x, y, largura, altura, 'assets/playerPro.png');
+    constructor(game, ctx, x, y) {
+        super(ctx, x, y,68,48);
         this.game = game;
 
         // Cria a variavel timer na classe Player
@@ -24,16 +24,15 @@ class Player extends Entity {
     }
 
     draw() {
-        const quantidadeFrames = 3;
-        const larguraFrame = this.imageElement.width / quantidadeFrames;
-        const alturaFrame = this.imageElement.height;
-        this.ctx.drawImage(
-            this.imageElement,
-            this.frameSpritesheet * larguraFrame, 0,
-            larguraFrame, alturaFrame,
-            this.x, this.y,
-            this.largura, this.altura
-        );
+
+        // const quantidadeFrames = 3;
+        // const larguraFrame = this.imageElement.width / quantidadeFrames;
+        // const alturaFrame = this.imageElement.height;
+        Spritesheet.instance.draw(this.ctx, `yellow${this.frameSpritesheet}.png`, this.x, this.y, this.largura, this.altura)
+        // this.ctx.drawImage(
+        //     this.x, this.y,
+        //     this.largura, this.altura
+        // );
     }
 
     /**
