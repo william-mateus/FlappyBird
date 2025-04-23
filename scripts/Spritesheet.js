@@ -8,11 +8,11 @@ class Spritesheet {
     async load() {
         
         this.image = new Image();
-        this.image.src = `../assets/texture.png`;
+        this.image.src = `${window.location.href}/assets/texture.png`;
         await this.image.decode();
 
 
-        const request = await fetch(`../assets/texture.json`);
+        const request = await fetch(`${window.location.href}/assets/texture.json`);
         this.pack = await request.json();
     }
 
